@@ -1,26 +1,32 @@
-    CREATE TABLE Country (
-     land VARCHAR(25) NOT NULL PRIMARY KEY
+CREATE TABLE Author (
+    name VARCHAR(128) NOT NULL PRIMARY KEY,
+    country VARCHAR(70) NOT NULL,
+    url VARCHAR(256) NOT NULL
 );
 
-CREATE TABLE Game(
-    play VARCHAR(50) NOT NULL PRIMARY KEY
-);
+CREATE TABLE Country (
+    country varchar(70) NOT NULL PRIMARY KEY
+    );
 
-CREATE TABLE Author(
-    author_name VARCHAR(50) NOT NULL PRIMARY KEY,
-    author_country VARCHAR(25) NOT NULL,
-    author_url VARCHAR(256),
-    FOREIGN KEY(author_country) REFERENCES Country (land)
-);
+ALTER TABLE Author
+add constraint country_fk FOREIGN KEY (country) REFERENCES Country (country); 
+
+CREATE TABLE Game (
+    game VARCHAR(128) NOT NULL PRIMARY KEY
+    );
 
 CREATE TABLE Map (
-    map_id INT DEFAULT 0 CHECK(map_id >= 0) PRIMARY KEY,
-    author_name VARCHAR(50) NOT NULL,
-    map_name VARCHAR(256) NOT NULL,
-    map_date DATE NOT NULL,
-    rating INT DEFAULT 0,
-    map_game VARCHAR(50) NOT NULL,
-    downloads INT DEFAULT 0 CHECK(downloads >= 0),
-    FOREIGN KEY(author_name) REFERENCES Author (author_name),
-    FOREIGN KEY(map_game) REFERENCES Game (play)
-    );
+    id INT NOT NULL PRIMARY KEY,
+    name VARCHAR(128) NOT NULL,
+    game VARCHAR(128) NOT NULL,
+    rating INT NOT NULL,
+    author_name VARCHAR(128) NOT NULL,
+    downloads INT NOT NULL,
+    map_date DATE NOT NULL
+);
+
+ALTER TABLE Map
+ADD CONSTRAINT author_name_fk FOREIGN KEY (author_name) REFERENCES Author (name);
+
+ALTER TABLE Map
+ADD CONSTRAINT game_fk FOREIGN KEY (game) REFERENCES Game (game);

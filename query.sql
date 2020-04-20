@@ -1,18 +1,19 @@
-SELECT Country.land , SUM(Map.rating) as sum_like 
+SELECT Country.country , SUM(Map.rating) as sum_like 
 FROM country 
-JOIN author ON country.land = author.author_country 
-JOIN map ON map.author_name = author.author_name
-GROUP BY Country.land;
+JOIN author ON country.country = author.country 
+JOIN map ON map.author_name = author.name
+GROUP BY Country.country
 
 SELECT
-    game.play,
-    ROUND(COUNT(map.map_id)*100/t.total, 2) AS percent
+    game.game,
+    ROUND(COUNT(map.id)*100/t.total, 2) AS percent
+    FROM map JOIN game ON map.game = game.game,
+        (SELECT COUNT(map.id) AS total FROM map) t
+GROUP BY game.game, t.total
 
-FROM map,game, 
-    (SELECT COUNT(map.map_id) AS total FROM map) t
-GROUP BY game.play;
-
-
-SELECT map.map_date, COUNT(map.map_date) as total_maps 
-FROM map 
-GROUP BY map.map_date;
+SELECT
+    EXTRACT(year from Map.map_date) as year,
+    COUNT(Map.id)
+FROM Map
+GROUP BY EXTRACT(year from Map.map_date)
+ORDER BY EXTRACT(year from Map.map_date)
