@@ -8,7 +8,7 @@ SELECT
     game.play,
     ROUND(COUNT(map.map_id)*100/t.total, 2) AS percent
 
-FROM map,
+FROM map,game, 
     (SELECT COUNT(map.map_id) AS total FROM map) t
 GROUP BY game.play;
 
